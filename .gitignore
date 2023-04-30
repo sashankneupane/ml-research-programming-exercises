@@ -1,0 +1,5 @@
+# removing all the virtual environments from the repo
+**/venv/
+
+# removing all the research papers from the repo
+**/Papers/

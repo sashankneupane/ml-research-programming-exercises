@@ -12,5 +12,4 @@
 
 Note: use the pre-trained model that they have provided instead of
 training a model yourself.
- 
 
