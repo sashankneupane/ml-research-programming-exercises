@@ -65,6 +65,7 @@ total_step = len(train_loader)
 
 # train the model
 total_step = len(train_loader)
+losses = []
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
         # forward pass
@@ -75,6 +76,9 @@ for epoch in range(num_epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+        # store the loss
+        losses.append(loss.item())
 
         if (i+1) % 1000 == 0:
             print('Epoch [{}/{}], Step [{}/{}], Loss: {:.6f}'.format(epoch+1, num_epochs, i+1, total_step, loss.item()))

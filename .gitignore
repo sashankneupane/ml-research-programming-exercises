@@ -3,3 +3,6 @@
 
 # removing all the research papers from the repo
 **/Papers/
+
+# removing all the datasets from the repo
+data/
