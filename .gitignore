@@ -6,3 +6,9 @@
 
 # removing all the datasets from the repo
 data/
+
+# removing all the models from the repo
+**/models/
+
+# removing all the python cache files from the repo
+**/__pycache__/
