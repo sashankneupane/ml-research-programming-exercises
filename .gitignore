@@ -12,3 +12,6 @@ data/
 
 # removing all the python cache files from the repo
 **/__pycache__/
+
+# removing runs from the repo
+**/runs/
