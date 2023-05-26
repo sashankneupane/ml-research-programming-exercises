@@ -1,9 +1,12 @@
-from alexnet import AlexNet
-
+# necessary imports
+import time
 import torch
 import torch.nn as nn
-from torchvision import datasets, transforms
+from torchvision import datasets, transforms, models
 from torch.utils.tensorboard import SummaryWriter
+
+# import alexnet model
+from alexnet import AlexNet
 
 # data path
 data_path = '~/Downloads/Data'
@@ -19,39 +22,39 @@ preprocess = transforms.Compose([
     )
 ])
 
-# use data loader to load the data
-train_dataset = datasets.ImageFolder(root=data_path + '/train', transform=preprocess)
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=8)
-
-val_dataset = datasets.ImageFolder(root=data_path + '/val', transform=preprocess)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=4, shuffle=True, num_workers=8)
-
-
-# create an instance of the model
-model = AlexNet()
-
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model = model.to(device)
-
 # define hyperparameters from the original AlexNet
 learning_rate = 0.001
 momentum = 0.9
 weight_decay = 0.0005
 epochs = 90
+batch_size = 128
 
-# define the loss function and optimizer
+# set the device to gpu 1
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+# use data loader to load the data
+train_dataset = datasets.ImageFolder(root=data_path + '/train', transform=preprocess)
+val_dataset = datasets.ImageFolder(root=data_path + '/val', transform=preprocess)
+
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=32)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=32)
+
+# define the model and move it to gpus
+model = AlexNet()
+# model = models.alexnet(weights='DEFAULT')
+model.to(device)
+
 criterion = nn.CrossEntropyLoss().to(device)
-
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum, weight_decay=weight_decay)
-
 
 # define the training loop
 def train_loop(train_loader, val_loader, model, loss_fn, optimizer):
 
     writer = SummaryWriter(log_dir='runs/ImageNet/AlexNet')
+    start = time.time()
 
     for epoch in range(epochs):
-    
+
         model.train()
         running_loss = 0.0
 
@@ -71,15 +74,14 @@ def train_loop(train_loader, val_loader, model, loss_fn, optimizer):
             running_loss += loss.item()
 
             # prin the loss
-            if batch % 100 == 0:
-                print(f"Epoch [{epoch+1}/{epochs}], Step [{batch}/{len(train_loader)}], Loss: {loss.item()}")
-                
+            if batch % 50 == 0:
+                print(f"Epoch [{epoch+1}/{epochs}], Step [{batch}/{len(train_loader)}], Loss: {loss.item()}")                
 
             writer.add_scalar('loss', loss.item(), epoch * len(train_loader) + batch)
+            writer.flush()
 
         # pring the loss after every epoch
         print(f"Epoch [{epoch+1}/{epochs}], Loss: {running_loss/len(train_loader)}")
-
         
         # validate the model with two gpus
         model.eval()
@@ -98,11 +100,22 @@ def train_loop(train_loader, val_loader, model, loss_fn, optimizer):
         test_loss /= num_batches
         correct /= size
 
-        print(f"Validation Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
-    
+        print(f"\nEpoch {epoch+1}: Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f}\n")
+
+
+        # save the model checkpoint after every 10 epochs
+        if (epoch+1) % 10 == 0:
+            torch.save(model.state_dict(), f"./models/AlexNet_ImageNet_{epoch+1}.pth")
+
+    # conclude the training time to hours and minutes
+    end = time.time()
+    hours, rem = divmod(end-start, 3600)
+    minutes, seconds = divmod(rem, 60)
+    print(f"Training time: {hours:.0f}h {minutes:.0f}m {seconds:.0f}s")
+
     writer.close()
 
 train_loop(train_loader, val_loader, model, criterion, optimizer)
 
 # save the model
-torch.save(model.state_dict(), "./models/alexnet_imagenet.pth")
+torch.save(model.state_dict(), "./models/Alexnet_ImageNet.pth")
