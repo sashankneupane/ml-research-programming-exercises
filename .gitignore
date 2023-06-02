@@ -5,7 +5,7 @@
 **/Papers/
 
 # removing all the datasets from the repo
-data/
+**/data/
 
 # removing all the models from the repo
 **/models/
