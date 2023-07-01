@@ -7,6 +7,9 @@ The research papers I am studying for this project.
 - LIRA: Learnable, Imperceptible and Robust Backdoor Attacks (<a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Doan_LIRA_Learnable_Imperceptible_and_Robust_Backdoor_Attacks_ICCV_2021_paper.pdf">paper</a>)
 - NARCISSUS: A Practical Clean-Label Backdoor
 Attack with Limited Information (<a href="https://arxiv.org/pdf/2204.05255.pdf">paper</a>)
+- Label-Consistent Backdoor Attacks (<a href="https://arxiv.org/pdf/1912.02771.pdf">paper</a>)
+- Hidden Trigger Backdoor Attacks (<a href="https://arxiv.org/pdf/1910.00033.pdf">paper</a>)
+- Sleeper Agent: Scalable Hidden Trigger Backdoors for Neural Networks Trained from Scratch (<a href="https://arxiv.org/pdf/2106.08970.pdf">paper</a>)
 
 ## Backdoor Defense Papers
 
