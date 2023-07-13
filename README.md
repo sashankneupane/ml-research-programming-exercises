@@ -12,6 +12,9 @@ Attack with Limited Information (<a href="https://arxiv.org/pdf/2204.05255.pdf">
 - Sleeper Agent: Scalable Hidden Trigger Backdoors for Neural Networks Trained from Scratch (<a href="https://arxiv.org/pdf/2106.08970.pdf">paper</a>)
 
 ## Backdoor Defense Papers
+- Neural Cleanse: Identifying and Mitigating Backdoor Attacks in Neural Networks <a href="https://people.cs.uchicago.edu/~ravenben/publications/pdf/backdoor-sp19.pdf">paper</a>
+- Fine-Pruning: Defending Against Backdooring Attacks on Deep Neural Networks <a href="https://arxiv.org/pdf/1805.12185.pdf">paper</a>
+- ADVERSARIAL UNLEARNING OF BACKDOORS VIA IMPLICIT HYPERGRADIENT <a href="https://arxiv.org/pdf/2110.03735.pdf">paper</a>
 
 ## ADAS Papers
 
